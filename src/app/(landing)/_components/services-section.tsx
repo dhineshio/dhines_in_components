@@ -25,7 +25,7 @@ const SERVICES: {
     text: "Modern, scalable and high-performing web applications.",
     theme: "blue",
     href: "#web",
-    image: "/web-developement.png",
+    image: "/web-developement.webp",
     imageClass: "bottom-[11px] w-[100%] translate-x-[calc(-50%+5px)]",
   },
   {
@@ -33,7 +33,7 @@ const SERVICES: {
     text: "Android & iOS apps for businesses and communities.",
     theme: "violet",
     href: "#mobile",
-    image: "/app-developement.png",
+    image: "/app-developement.webp",
     imageClass: "bottom-0 w-[122%] translate-x-[calc(-50%-14px)]",
   },
   {
@@ -41,7 +41,7 @@ const SERVICES: {
     text: "AI-powered tools to automate and enhance your work.",
     theme: "rose",
     href: "#ai",
-    image: "/ai-solutions.png",
+    image: "/ai-solutions.webp",
     imageClass: "bottom-[6px] w-[110%] translate-x-[calc(-50%-2px)]",
   },
   {
@@ -49,7 +49,7 @@ const SERVICES: {
     text: "End-to-end SaaS products with payments and growth-ready features.",
     theme: "indigo",
     href: "#saas",
-    image: "/sass-developement.png",
+    image: "/sass-developement.webp",
     imageClass: "bottom-[18px] w-[93%] translate-x-[calc(-50%-2px)]",
   },
   {
@@ -57,7 +57,7 @@ const SERVICES: {
     text: "Scalable cloud infrastructure, CI/CD and secure deployments.",
     theme: "sky",
     href: "#cloud",
-    image: "/devops-cloud.png",
+    image: "/devops-cloud.webp",
     imageClass: "bottom-[5px] w-[109%] translate-x-[calc(-50%-2px)]",
   },
   {
@@ -65,7 +65,7 @@ const SERVICES: {
     text: "Custom CRM, donation systems and tools for non-profits.",
     theme: "red",
     href: "#ngo",
-    image: "/ngo-tech.png",
+    image: "/ngo-tech.webp",
     imageClass: "bottom-[14px] w-[99%] translate-x-[calc(-50%-3px)]",
   },
 ];
@@ -111,7 +111,7 @@ export function ServicesSection() {
       />
       <section
         id="services"
-        className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 px-6 py-20 md:px-10 lg:grid-cols-[1fr_3fr] lg:gap-8"
+        className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 px-6 py-14 md:px-10 lg:grid-cols-[1fr_3fr] lg:gap-8"
       >
         <style>{styles}</style>
         {/* Intro (stays in view while the cards scroll) */}
@@ -137,7 +137,9 @@ export function ServicesSection() {
         </div>
 
         {/* Cards */}
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Below lg: swipe carousel (cards keep the desktop width, so the
+            images fit). lg and up: 3-column grid. */}
+        <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] md:-mx-10 md:px-10 lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-5 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden">
           {SERVICES.map(({ title, text, theme, href, image, imageClass }) => (
             <a
               key={title}
@@ -149,7 +151,7 @@ export function ServicesSection() {
                   "--c3": waveColors(theme)[2],
                 } as CSSProperties
               }
-              className="svc-card group relative flex min-h-[400px] flex-col overflow-hidden rounded-2xl border border-white bg-white/75 p-7 shadow-[0_0_0_1px_rgba(15,23,42,0.04),0_10px_30px_-18px_rgba(99,102,241,0.18)] backdrop-blur-sm transition-shadow hover:shadow-[0_0_0_1px_rgba(15,23,42,0.03),0_20px_50px_-25px_rgba(99,102,241,0.35)]"
+              className="svc-card group relative flex min-h-[400px] w-[280px] shrink-0 snap-center flex-col lg:w-auto lg:shrink overflow-hidden rounded-2xl border border-slate-200 bg-white/75 p-7 shadow-[0_0_0_1px_rgba(15,23,42,0.04),0_10px_30px_-18px_rgba(99,102,241,0.18)] backdrop-blur-sm transition-shadow hover:shadow-[0_0_0_1px_rgba(15,23,42,0.03),0_20px_50px_-25px_rgba(99,102,241,0.35)]"
             >
               <div className="relative z-10 flex items-start justify-between gap-4">
                 <h3 className="text-2xl leading-tight font-medium tracking-tight text-slate-950">

@@ -93,5 +93,8 @@
   }
   html {
     @apply font-sans;
+    /* Keep the scrollbar space reserved, so locking page scroll (mobile
+       menu) does not shift the layout. */
+    scrollbar-gutter: stable;
   }
 }

@@ -11,6 +11,8 @@
 //   the cursor moves on.
 // - Reveal: on load the dots fade in one by one (random order) while the
 //   sphere grows slightly into place.
+// - Mobile: some dots take the brand colors (blue / purple / pink); set by
+//   ACCENT_QUERY. Desktop stays grey.
 // Pauses when off-screen or the tab is hidden.
 
 import { useEffect, useRef } from "react";
@@ -21,6 +23,15 @@ const DOTS = 4500; // fewer dots = more space between them
 const DOT_SIZE = 2.2; // px when the canvas is 720px
 const COLOR: [number, number, number] = [0.3, 0.33, 0.4]; // slate grey
 const SPIN_SPEED = 0.08; // slow auto spin, radians per second
+// Brand-colored dots, shown only when this media query matches (mobile).
+const ACCENT_QUERY = "(max-width: 1023px)";
+const ACCENT_SHARE = 0.22; // share of dots that get a brand color
+const ACCENTS: [number, number, number][] = [
+  [0.25, 0.37, 0.71], // blue   #3f5fb5
+  [0.49, 0.36, 0.94], // purple #7c5cf0
+  [0.86, 0.37, 0.66], // pink   #db5fa8
+];
+
 const REVEAL_DELAY = 0.4; // seconds before the reveal starts
 const REVEAL_TIME = 1.8; // seconds the reveal takes
 
@@ -48,6 +59,7 @@ const vertex = /* glsl */ `
   attribute vec3 position;
   attribute vec2 offset;  // screen-space push from the simulation
   attribute float seed;   // per-dot random 0..1 (reveal order)
+  attribute vec3 tint;    // per-dot color (brand color, or the base grey)
   uniform mat4 modelViewMatrix;
   uniform mat4 projectionMatrix;
   uniform float uSize;
@@ -56,8 +68,10 @@ const vertex = /* glsl */ `
   varying float vFacing;
   varying float vMoved;
   varying float vShow;
+  varying vec3 vTint;
 
   void main() {
+    vTint = tint;
     vec3 view = (modelViewMatrix * vec4(position, 1.0)).xyz;
     vec3 center = (modelViewMatrix * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
     // 1 = facing the camera, 0 = on the edge, -1 = back side.
@@ -82,9 +96,11 @@ const vertex = /* glsl */ `
 const fragment = /* glsl */ `
   precision highp float;
   uniform vec3 uColor;
+  uniform float uAccent;  // 1 = show brand-colored dots
   varying float vFacing;
   varying float vMoved;
   varying float vShow;
+  varying vec3 vTint;
   void main() {
     float d = length(gl_PointCoord - 0.5);
     float circle = smoothstep(0.5, 0.3, d);
@@ -92,7 +108,8 @@ const fragment = /* glsl */ `
     // Swept dots show clearly even if they came from the back side.
     // Back dots: very light and faint.
     float alpha = circle * min(mix(0.05, 0.95, front) + 0.5 * vMoved, 1.0);
-    vec3 color = mix(uColor, vec3(0.85, 0.87, 0.91), (1.0 - max(front, vMoved)) * 0.8);
+    vec3 base = mix(uColor, vTint, uAccent);
+    vec3 color = mix(base, vec3(0.85, 0.87, 0.91), (1.0 - max(front, vMoved)) * 0.8);
     alpha *= vShow;
     gl_FragColor = vec4(color * alpha, alpha);
   }
@@ -131,6 +148,7 @@ export function DotSphere({ className }: { className?: string }) {
         uColor: { value: COLOR },
         uAspect: { value: 1 },
         uReveal: { value: 0 },
+        uAccent: { value: 0 },
       },
       transparent: true,
       depthTest: false, // back dots should show through
@@ -145,10 +163,21 @@ export function DotSphere({ className }: { className?: string }) {
     const scene = new Transform();
     const tilt = new Transform();
     tilt.setParent(scene);
+    // Per-dot color: a brand color for some dots, the base grey for the rest.
+    const tints = new Float32Array(DOTS * 3);
+    for (let i = 0; i < DOTS; i++) {
+      const color =
+        Math.random() < ACCENT_SHARE
+          ? ACCENTS[Math.floor(Math.random() * ACCENTS.length)]
+          : COLOR;
+      tints.set(color, i * 3);
+    }
+
     const geometry = new Geometry(gl, {
       position: { size: 3, data: positions },
       offset: { size: 2, data: offsets },
       seed: { size: 1, data: Float32Array.from({ length: DOTS }, Math.random) },
+      tint: { size: 3, data: tints },
     });
     const sphere = new Mesh(gl, { mode: gl.POINTS, geometry, program });
     sphere.rotation.x = 0.35; // keep the spiral poles off center
@@ -170,6 +199,14 @@ export function DotSphere({ className }: { className?: string }) {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
     resize();
+
+    // Brand colors only on small screens.
+    const accentMedia = window.matchMedia(ACCENT_QUERY);
+    const applyAccent = () => {
+      program.uniforms.uAccent.value = accentMedia.matches ? 1 : 0;
+    };
+    applyAccent();
+    accentMedia.addEventListener("change", applyAccent);
 
     // --- Mouse -------------------------------------------------------------
     // Mouse in screen units (x scaled by aspect so distances are round).
@@ -308,6 +345,7 @@ export function DotSphere({ className }: { className?: string }) {
       resizeObserver.disconnect();
       intersection.disconnect();
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      accentMedia.removeEventListener("change", applyAccent);
       container.removeEventListener("pointermove", onPointerMove);
       container.removeEventListener("pointerleave", onPointerLeave);
       container.removeChild(gl.canvas);

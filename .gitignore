@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# original PNG/JPG images, kept as a backup (the site uses the .webp copies)
+.image-originals

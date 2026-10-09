@@ -45,7 +45,7 @@ function ServiceList({ hidden }: { hidden?: boolean }) {
 
 export function ServicesStrip() {
   return (
-    <section className="relative z-10 mx-auto w-full max-w-7xl py-6">
+    <section className="relative z-10 mx-auto w-full max-w-7xl pt-6">
       <style>{styles}</style>
       <p className="px-6 text-[11px] font-medium tracking-[0.25em] text-[#3f5fb5] uppercase md:px-10">
         Services we offer

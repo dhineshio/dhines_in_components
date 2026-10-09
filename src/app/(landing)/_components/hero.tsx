@@ -87,7 +87,7 @@ const accentStart = 0.15 + HEADING.split(" ").length * 0.06;
 
 export function Hero() {
   return (
-    <section className="pointer-events-none relative z-10 mx-auto w-full max-w-7xl flex-1 px-6 pt-12 md:px-10 md:pt-16">
+    <section className="pointer-events-none relative z-10 mx-auto w-full max-w-7xl flex-1 px-6 pt-12 pb-[calc(min(700px,150vw)*0.23+1.5rem)] md:px-10 md:pt-16 lg:pb-0">
       <style>{styles}</style>
       <div className="pointer-events-auto max-w-2xl">
         {/* Small label */}
