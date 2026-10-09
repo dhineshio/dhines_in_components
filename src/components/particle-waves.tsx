@@ -11,7 +11,8 @@ import { cn } from "@/lib/utils";
 const SIZE = 400;
 const LINES = 30;
 
-export type WaveTheme = "blue" | "violet" | "rose";
+export type WaveTheme =
+  "blue" | "violet" | "rose" | "indigo" | "sky" | "red" | "aurora";
 
 const THEMES: Record<
   WaveTheme,
@@ -41,6 +42,32 @@ const THEMES: Record<
     tilt: 0.9,
     phase: 3.1,
     flip: true,
+  },
+  indigo: {
+    colors: ["#818cf8", "#8b5cf6", "#c084fc"],
+    glow: "#ddd6fe",
+    tilt: 0.85,
+    phase: 0.8,
+  },
+  sky: {
+    colors: ["#38bdf8", "#3b82f6", "#818cf8"],
+    glow: "#bae6fd",
+    tilt: 0.75,
+    phase: 2.3,
+    flip: true,
+  },
+  red: {
+    colors: ["#fb7185", "#f43f5e", "#c084fc"],
+    glow: "#fecdd3",
+    tilt: 0.95,
+    phase: 4.2,
+  },
+  // Wide blue -> purple -> pink wave for section backgrounds.
+  aurora: {
+    colors: ["#3b82f6", "#a855f7", "#f472b6"],
+    glow: "#f5d0fe",
+    tilt: 0.6,
+    phase: 0.4,
   },
 };
 

@@ -7,16 +7,23 @@ const HEADING = "Technology that moves your";
 const HEADING_ACCENT = "business forward.";
 
 const FEATURES = [
-  { icon: Box, title: "Custom Software", text: "Built around your needs" },
+  {
+    icon: Box,
+    title: "Custom Software",
+    text: "Built around your needs",
+    color: "text-blue-500",
+  },
   {
     icon: ChartNoAxesColumn,
     title: "Scalable Solutions",
     text: "Designed to grow",
+    color: "text-violet-500",
   },
   {
     icon: ShieldCheck,
     title: "Reliable Support",
     text: "With you at every step",
+    color: "text-pink-500",
   },
 ];
 
@@ -43,7 +50,10 @@ const styles = `
     animation-delay: var(--d, 0s);
   }
   .hero-shine {
-    background: linear-gradient(100deg, #3f5fb5 40%, #93a8ee 50%, #3f5fb5 60%) 120% 0 / 250% 100%;
+    /* shine layer on top of a blue -> purple -> pink gradient */
+    background:
+      linear-gradient(100deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%) 120% 0 / 250% 100% no-repeat,
+      linear-gradient(90deg, #3f5fb5, #7c5cf0 55%, #db5fa8);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -53,7 +63,7 @@ const styles = `
   }
   @keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes hero-word { to { transform: none; } }
-  @keyframes hero-shine { 0% { background-position: 120% 0; } 35%, 100% { background-position: -20% 0; } }
+  @keyframes hero-shine { 0% { background-position: 120% 0, 0 0; } 35%, 100% { background-position: -20% 0, 0 0; } }
   @media (prefers-reduced-motion: reduce) {
     .hero-in, .hero-word { animation: none; opacity: 1; transform: none; }
     .hero-shine { animation: none; }
@@ -139,13 +149,15 @@ export function Hero() {
 
         {/* Features */}
         <ul className="mt-12 grid gap-6 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-slate-200">
-          {FEATURES.map(({ icon: Icon, title, text }, i) => (
+          {FEATURES.map(({ icon: Icon, title, text, color }, i) => (
             <li
               key={title}
               className="hero-in flex items-start gap-4 sm:px-6 sm:first:pl-0"
               style={delay(accentStart + 0.5 + i * 0.1)}
             >
-              <Icon className="mt-0.5 size-6 shrink-0 stroke-[1.5] text-slate-800" />
+              <Icon
+                className={`mt-0.5 size-6 shrink-0 stroke-[1.5] ${color}`}
+              />
               <div>
                 <p className="text-sm text-slate-700">{title}</p>
                 <p className="mt-1 text-xs text-slate-500">{text}</p>

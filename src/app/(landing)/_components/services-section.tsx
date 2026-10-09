@@ -44,6 +44,30 @@ const SERVICES: {
     image: "/ai-solutions.png",
     imageClass: "bottom-[6px] w-[110%] translate-x-[calc(-50%-2px)]",
   },
+  {
+    title: "SaaS Product Development",
+    text: "End-to-end SaaS products with payments and growth-ready features.",
+    theme: "indigo",
+    href: "#saas",
+    image: "/sass-developement.png",
+    imageClass: "bottom-[18px] w-[93%] translate-x-[calc(-50%-2px)]",
+  },
+  {
+    title: "Cloud & DevOps",
+    text: "Scalable cloud infrastructure, CI/CD and secure deployments.",
+    theme: "sky",
+    href: "#cloud",
+    image: "/devops-cloud.png",
+    imageClass: "bottom-[5px] w-[109%] translate-x-[calc(-50%-2px)]",
+  },
+  {
+    title: "NGO Solutions",
+    text: "Custom CRM, donation systems and tools for non-profits.",
+    theme: "red",
+    href: "#ngo",
+    image: "/ngo-tech.png",
+    imageClass: "bottom-[14px] w-[99%] translate-x-[calc(-50%-3px)]",
+  },
 ];
 
 // Hover border: a ring of the card's own colors spins around the edge.
@@ -79,78 +103,85 @@ const styles = `
 
 export function ServicesSection() {
   return (
-    <section
-      id="services"
-      className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 px-6 py-20 md:px-10 lg:grid-cols-[1fr_3fr] lg:gap-8"
-    >
-      <style>{styles}</style>
-      {/* Intro */}
-      <div className="lg:pt-6">
-        <p className="text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
-          Our services
-        </p>
-        <h2 className="mt-5 text-4xl leading-[1.1] font-medium tracking-tight text-slate-950">
-          Digital solutions for{" "}
-          <span className="text-[#3f5fb5]">real impact.</span>
-        </h2>
-        <p className="mt-5 leading-relaxed text-slate-500">
-          We design and build technology solutions that help businesses and
-          non-profits work better, faster and smarter.
-        </p>
-        <a
-          href="#services"
-          className="group mt-8 inline-flex items-center gap-3 rounded-lg bg-slate-950 px-6 py-3 text-[15px] text-white transition-colors hover:bg-slate-800"
-        >
-          Explore all services
-          <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-        </a>
-      </div>
-
-      {/* Cards */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {SERVICES.map(({ title, text, theme, href, image, imageClass }) => (
+    <div className="relative overflow-hidden bg-[radial-gradient(ellipse_at_10%_85%,#fdf2f8_0%,transparent_55%),radial-gradient(ellipse_at_90%_10%,#f5f3ff_0%,transparent_50%)]">
+      {/* Big particle wave behind the intro, bottom-left */}
+      <ParticleWaves
+        theme="aurora"
+        className="absolute -bottom-10 -left-20 h-[520px] w-[640px] opacity-35"
+      />
+      <section
+        id="services"
+        className="relative z-10 mx-auto grid w-full max-w-7xl gap-10 px-6 py-20 md:px-10 lg:grid-cols-[1fr_3fr] lg:gap-8"
+      >
+        <style>{styles}</style>
+        {/* Intro (stays in view while the cards scroll) */}
+        <div className="lg:sticky lg:top-24 lg:self-start lg:pt-6">
+          <p className="text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
+            Our services
+          </p>
+          <h2 className="mt-5 text-4xl leading-[1.1] font-medium tracking-tight text-slate-950">
+            Digital solutions for{" "}
+            <span className="text-[#3f5fb5]">real impact.</span>
+          </h2>
+          <p className="mt-5 leading-relaxed text-slate-500">
+            We design and build technology solutions that help businesses and
+            non-profits work better, faster and smarter.
+          </p>
           <a
-            key={title}
-            href={href}
-            style={
-              {
-                "--c1": waveColors(theme)[0],
-                "--c2": waveColors(theme)[1],
-                "--c3": waveColors(theme)[2],
-              } as CSSProperties
-            }
-            className="svc-card group relative flex min-h-[400px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-7 transition-shadow hover:shadow-[0_20px_50px_-25px_rgba(63,95,181,0.35)]"
+            href="#services"
+            className="group mt-8 inline-flex items-center gap-3 rounded-lg bg-slate-950 px-6 py-3 text-[15px] text-white transition-colors hover:bg-slate-800"
           >
-            <div className="relative z-10 flex items-start justify-between gap-4">
-              <h3 className="text-2xl leading-tight font-medium tracking-tight text-slate-950">
-                {title}
-              </h3>
-              <span className="grid size-11 shrink-0 place-items-center rounded-lg border border-slate-200 bg-white text-[#3f5fb5] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
-                <ArrowUpRight className="size-5" />
-              </span>
-            </div>
-            <p className="relative z-10 mt-3 max-w-[16rem] leading-relaxed text-slate-500">
-              {text}
-            </p>
-
-            {/* Particle wave background, lower part of the card */}
-            <ParticleWaves
-              theme={theme}
-              className="absolute inset-x-0 bottom-0 h-[70%] w-full"
-            />
-            {image && (
-              <Image
-                src={image}
-                alt=""
-                width={1536}
-                height={1024}
-                sizes="(min-width: 1024px) 400px, (min-width: 640px) 65vw, 135vw"
-                className={`absolute left-1/2 z-0 max-w-none object-contain ${imageClass ?? ""}`}
-              />
-            )}
+            Explore all services
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
           </a>
-        ))}
-      </div>
-    </section>
+        </div>
+
+        {/* Cards */}
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {SERVICES.map(({ title, text, theme, href, image, imageClass }) => (
+            <a
+              key={title}
+              href={href}
+              style={
+                {
+                  "--c1": waveColors(theme)[0],
+                  "--c2": waveColors(theme)[1],
+                  "--c3": waveColors(theme)[2],
+                } as CSSProperties
+              }
+              className="svc-card group relative flex min-h-[400px] flex-col overflow-hidden rounded-2xl border border-white bg-white/75 p-7 shadow-[0_0_0_1px_rgba(15,23,42,0.04),0_10px_30px_-18px_rgba(99,102,241,0.18)] backdrop-blur-sm transition-shadow hover:shadow-[0_0_0_1px_rgba(15,23,42,0.03),0_20px_50px_-25px_rgba(99,102,241,0.35)]"
+            >
+              <div className="relative z-10 flex items-start justify-between gap-4">
+                <h3 className="text-2xl leading-tight font-medium tracking-tight text-slate-950">
+                  {title}
+                </h3>
+                <span className="grid size-11 shrink-0 place-items-center rounded-lg border border-slate-200 bg-white text-[#3f5fb5] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+                  <ArrowUpRight className="size-5" />
+                </span>
+              </div>
+              <p className="relative z-10 mt-3 max-w-[16rem] leading-relaxed text-slate-500">
+                {text}
+              </p>
+
+              {/* Particle wave background, lower part of the card */}
+              <ParticleWaves
+                theme={theme}
+                className="absolute inset-x-0 bottom-0 h-[70%] w-full"
+              />
+              {image && (
+                <Image
+                  src={image}
+                  alt=""
+                  width={1536}
+                  height={1024}
+                  sizes="(min-width: 1024px) 400px, (min-width: 640px) 65vw, 135vw"
+                  className={`absolute left-1/2 z-0 max-w-none object-contain ${imageClass ?? ""}`}
+                />
+              )}
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }

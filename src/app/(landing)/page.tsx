@@ -17,6 +17,15 @@ export default function LandingPage() {
       {/* First screen: header + hero */}
       <div className="relative flex h-svh min-h-[680px] flex-col overflow-hidden border-b border-slate-200">
         <SiteHeader />
+        {/* Soft color glows behind the orbit art */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-20 right-0 hidden h-[calc(100%-5rem)] w-[55%] lg:block"
+        >
+          <div className="absolute top-[15%] right-[30%] size-80 rounded-full bg-blue-300/30 blur-3xl" />
+          <div className="absolute top-[35%] right-[8%] size-72 rounded-full bg-violet-300/30 blur-3xl" />
+          <div className="absolute top-[58%] right-[28%] size-64 rounded-full bg-pink-300/25 blur-3xl" />
+        </div>
         {/* Orbit art on the right side, below the header */}
         <OrbitArt className="absolute top-20 right-0 hidden h-[calc(100%-5rem)] w-auto lg:block" />
         <Hero />

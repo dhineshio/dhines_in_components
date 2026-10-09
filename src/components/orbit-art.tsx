@@ -14,7 +14,9 @@ const W = 952;
 const H = 995;
 
 const LINE = "#c9cfe0"; // thin line color
-const DOT = "#3f5fb5"; // dot / node color
+// Dots and nodes use a blue -> purple -> pink gradient across the art.
+const DOT = "url(#orbit-color)";
+const HALO = "#7c5cf0"; // glow around the big nodes
 const OPACITY = 0.8; // overall strength of the whole art (0..1)
 
 /** Thin solid orbit lines. */
@@ -179,10 +181,23 @@ export function OrbitArt({ className }: { className?: string }) {
     >
       <style>{styles}</style>
       <defs>
+        {/* userSpaceOnUse so thin straight lines still get the gradient */}
+        <linearGradient
+          id="orbit-color"
+          x1="0"
+          y1="0"
+          x2={W}
+          y2={H}
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0" stopColor="#3f5fb5" />
+          <stop offset="0.55" stopColor="#7c5cf0" />
+          <stop offset="1" stopColor="#db5fa8" />
+        </linearGradient>
         <radialGradient id="orbit-halo">
-          <stop offset="0" stopColor={DOT} stopOpacity="0.14" />
-          <stop offset="0.7" stopColor={DOT} stopOpacity="0.08" />
-          <stop offset="1" stopColor={DOT} stopOpacity="0" />
+          <stop offset="0" stopColor={HALO} stopOpacity="0.14" />
+          <stop offset="0.7" stopColor={HALO} stopOpacity="0.08" />
+          <stop offset="1" stopColor={HALO} stopOpacity="0" />
         </radialGradient>
       </defs>
 
