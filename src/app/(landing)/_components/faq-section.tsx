@@ -9,6 +9,7 @@
 
 import { useState } from "react";
 import { Plus } from "lucide-react";
+import { Reveal } from "@/components/reveal";
 
 const FAQS: { q: string; a: string }[] = [
   {
@@ -46,42 +47,49 @@ export function FaqSection() {
       className="relative z-10 mx-auto w-full max-w-7xl px-6 py-14 md:px-10"
     >
       <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
-        {/* Intro */}
-        <div>
+        {/* Intro, then the questions one by one, reveal on scroll */}
+        <Reveal distance={40} duration={0.9} threshold={0.15}>
           <p className="text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
             FAQ
           </p>
           <h2 className="mt-4 text-4xl leading-[1.1] font-semibold tracking-tight text-slate-950">
             Questions,{" "}
-            <span className="bg-gradient-to-r from-[#3f5fb5] via-[#7c5cf0] to-[#db5fa8] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] bg-clip-text text-transparent">
               answered.
             </span>
           </h2>
           <p className="mt-4 leading-relaxed text-slate-500">
             Do not see your question here? Ask us and we will reply soon.
           </p>
-        </div>
+        </Reveal>
 
         {/* Questions */}
-        <div className="divide-y divide-slate-200 border-y border-slate-200">
+        <Reveal
+          role="list"
+          distance={30}
+          duration={0.7}
+          stagger={0.07}
+          threshold={0.1}
+          className="divide-y divide-slate-200 border-y border-slate-200"
+        >
           {FAQS.map(({ q, a }, i) => {
             const isOpen = open === i;
             return (
-              <div key={q}>
+              <div key={q} role="listitem">
                 <h3>
                   <button
                     type="button"
                     aria-expanded={isOpen}
                     aria-controls={`faq-answer-${i}`}
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="flex w-full items-center justify-between gap-6 py-5 text-left text-lg font-medium text-slate-950"
+                    className="group flex w-full items-center justify-between gap-6 py-5 text-left text-lg font-medium text-slate-950 transition-colors hover:text-[#2F5BFF]"
                   >
                     {q}
                     <span
                       className={`grid size-9 shrink-0 place-items-center rounded-full border transition-[transform,background-color,color,border-color] duration-300 ease-out motion-reduce:transition-none ${
                         isOpen
-                          ? "rotate-45 border-slate-950 bg-slate-950 text-white"
-                          : "border-slate-200 text-slate-700"
+                          ? "rotate-45 border-transparent bg-gradient-to-br from-[#0A84FF] to-[#5B3BF0] text-white"
+                          : "border-slate-200 text-slate-700 group-hover:border-[#2F5BFF]/40 group-hover:text-[#2F5BFF]"
                       }`}
                     >
                       <Plus className="size-4" />
@@ -107,7 +115,7 @@ export function FaqSection() {
               </div>
             );
           })}
-        </div>
+        </Reveal>
       </div>
     </section>
   );

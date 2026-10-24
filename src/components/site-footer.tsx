@@ -7,6 +7,7 @@
 import Link from "next/link";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
+import { Reveal } from "@/components/reveal";
 import { CONTACT } from "@/constants/contact";
 
 const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
@@ -38,13 +39,20 @@ const SOCIALS = [
   { label: "YouTube", href: "#" },
 ];
 
-const linkClass = "text-slate-600 transition-colors hover:text-slate-950";
+const linkClass = "text-slate-600 transition-colors hover:text-[#2F5BFF]";
 
 export function SiteFooter() {
   return (
     <footer className="relative z-10 overflow-hidden border-t border-slate-200">
       <div className="mx-auto w-full max-w-7xl px-6 pt-14 md:px-10">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        {/* Columns rise in one by one on scroll */}
+        <Reveal
+          distance={30}
+          duration={0.7}
+          stagger={0.08}
+          threshold={0.1}
+          className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]"
+        >
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-3 text-slate-900">
@@ -103,7 +111,7 @@ export function SiteFooter() {
                 <li key={label}>
                   <a
                     href={href}
-                    className="inline-flex items-center gap-1 rounded-full border border-slate-900/10 px-3.5 py-1.5 text-sm text-slate-700 transition-colors hover:border-slate-400 hover:text-slate-950"
+                    className="inline-flex items-center gap-1 rounded-full border border-slate-900/10 px-3.5 py-1.5 text-sm text-slate-700 transition-colors hover:border-[#2F5BFF]/40 hover:text-[#2F5BFF]"
                   >
                     {label}
                     <ArrowUpRight className="size-3.5" />
@@ -112,7 +120,7 @@ export function SiteFooter() {
               ))}
             </ul>
           </div>
-        </div>
+        </Reveal>
 
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-slate-200 py-6 text-sm text-slate-500 sm:flex-row sm:items-center">
@@ -122,7 +130,7 @@ export function SiteFooter() {
           </p>
           <a
             href="#top"
-            className="group inline-flex items-center gap-2 text-slate-700 transition-colors hover:text-slate-950"
+            className="group inline-flex items-center gap-2 text-slate-700 transition-colors hover:text-[#2F5BFF]"
           >
             Back to top
             <ArrowUp className="size-4 transition-transform group-hover:-translate-y-0.5" />
@@ -131,12 +139,14 @@ export function SiteFooter() {
       </div>
 
       {/* Large faded brand word, cut off at the bottom edge */}
-      <p
-        aria-hidden
-        className="pointer-events-none -mb-[0.22em] bg-gradient-to-b from-slate-200 to-transparent bg-clip-text text-center text-[clamp(3rem,15.5vw,14rem)] leading-none font-semibold tracking-tight text-transparent select-none"
-      >
-        Threadstack
-      </p>
+      <Reveal distance={60} duration={1.1} threshold={0.05}>
+        <p
+          aria-hidden
+          className="pointer-events-none -mb-[0.22em] bg-gradient-to-b from-[#2F5BFF]/20 to-transparent bg-clip-text text-center text-[clamp(3rem,15.5vw,14rem)] leading-none font-semibold tracking-tight text-transparent select-none"
+        >
+          Threadstack
+        </p>
+      </Reveal>
     </footer>
   );
 }

@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
 import { DotSphere } from "@/components/dot-sphere";
 import { SiteFooter } from "@/components/site-footer";
 import { HeroShards } from "@/components/hero-shards";
 import { SiteHeader } from "@/components/site-header";
+import { SmoothScroll } from "@/components/smooth-scroll";
 import { ContactSection } from "./_components/contact-section";
 import { FaqSection } from "./_components/faq-section";
 import { Hero } from "./_components/hero";
@@ -14,6 +16,26 @@ import { ServicesStrip } from "./_components/services-strip";
 import { TechSection } from "./_components/tech-section";
 import { WhySection } from "./_components/why-section";
 
+// Page title and share card. The share images sit next to this page
+// (opengraph-image.png, twitter-image.png); icons are in src/app.
+// Set NEXT_PUBLIC_SITE_URL to the real domain so share links use full URLs.
+export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
+  title: "Threadstack Technologies",
+  description:
+    "Websites, SaaS products, mobile apps and AI tools for businesses and non-profits.",
+  openGraph: {
+    type: "website",
+    siteName: "Threadstack Technologies",
+    title: "Threadstack Technologies",
+    description:
+      "Websites, SaaS products, mobile apps and AI tools for businesses and non-profits.",
+  },
+  twitter: { card: "summary_large_image" },
+};
+
 export default function LandingPage() {
   return (
     <main id="top" className="relative overflow-x-clip bg-white">
@@ -23,6 +45,7 @@ export default function LandingPage() {
         className="pointer-events-none absolute top-[81px] bottom-0 left-1/2 z-30 w-full max-w-7xl -translate-x-1/2 border-x border-slate-200/80"
       />
 
+      <SmoothScroll />
       <SiteHeader />
 
       {/* First screen: header + hero */}
