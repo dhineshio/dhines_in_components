@@ -93,11 +93,11 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative z-10 mx-auto w-full max-w-7xl scroll-mt-24 px-6 py-14 md:px-10"
+      className="relative z-10 mx-auto w-full max-w-7xl scroll-mt-24 px-3 py-10 sm:px-6 md:px-10 md:py-14"
     >
       {/* The whole card rises in on scroll */}
       <Reveal distance={50} duration={0.9} threshold={0.12}>
-        <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0]">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br md:rounded-[32px] from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0]">
           {/* Background: React Bits GradientWaves (large screens only: its 3D
             shader is too heavy for phone GPUs). Phones get a still gradient in
             the same colors. */}
@@ -119,7 +119,7 @@ export function ContactSection() {
             )}
           </div>
 
-          <div className="relative grid gap-10 p-7 md:p-12 lg:grid-cols-2 lg:gap-16">
+          <div className="relative grid gap-8 p-4 pt-8 sm:p-7 md:gap-10 md:p-12 lg:grid-cols-2 lg:gap-16">
             {/* Pitch + direct options */}
             <div className="flex flex-col">
               <p className="text-[11px] font-medium tracking-[0.25em] text-white/70 uppercase">
@@ -171,7 +171,7 @@ export function ContactSection() {
             <form
               id="talk"
               onSubmit={onSubmit}
-              className="scroll-mt-24 rounded-3xl bg-white p-6 shadow-[0_30px_60px_-30px_rgba(15,23,42,0.5)] md:p-8"
+              className="scroll-mt-24 rounded-2xl bg-white p-5 shadow-[0_30px_60px_-30px_rgba(15,23,42,0.5)] md:rounded-3xl md:p-8"
             >
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="block text-sm font-medium text-slate-700">
