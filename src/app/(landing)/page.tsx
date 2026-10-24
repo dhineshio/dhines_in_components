@@ -42,7 +42,7 @@ export default function LandingPage() {
       {/* Vertical guide lines on both sides of the content area (start below the header) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-[81px] bottom-0 left-1/2 z-30 w-full max-w-7xl -translate-x-1/2 border-x border-slate-200/80"
+        className="pointer-events-none absolute top-[97px] bottom-0 left-1/2 z-30 w-full max-w-7xl -translate-x-1/2 border-x border-slate-200/80"
       />
 
       <SmoothScroll />
@@ -51,11 +51,11 @@ export default function LandingPage() {
       {/* First screen: header + hero */}
       <div className="relative flex flex-col overflow-hidden border-b border-slate-200 lg:h-svh lg:min-h-[680px]">
         {/* Spacer for the fixed header */}
-        <div aria-hidden className="h-[81px] shrink-0" />
+        <div aria-hidden className="h-[97px] shrink-0" />
         {/* Diagonal glass bands in the brand blues, right side (large screens).
             Fades out toward the text on the left. z-40 puts it above the
             vertical guide line (z-30), so the line sits behind the art. */}
-        <HeroShards className="absolute top-20 right-0 z-40 hidden h-[calc(100%-5rem)] w-[60%] [mask-image:linear-gradient(to_right,transparent,#000_35%)] lg:block" />
+        <HeroShards className="absolute top-24 right-0 z-40 hidden h-[calc(100%-6rem)] w-[60%] [mask-image:linear-gradient(to_right,transparent,#000_35%)] lg:block" />
         <Hero />
         {/* Sphere sits at the bottom center; only its top part shows. */}
         <DotSphere className="absolute bottom-0 left-1/2 aspect-square w-[min(700px,150vw)] -translate-x-1/2 translate-y-[62%]" />

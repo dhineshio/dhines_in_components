@@ -15,7 +15,7 @@ const NAV = [
 /**
  * Fixed header. At the top it blends into the page; once you scroll it turns
  * into frosted glass with a border line (no shadow). Height stays the same.
- * Put a h-[81px] spacer where the header used to sit.
+ * Put a h-[97px] spacer where the header used to sit.
  */
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -75,9 +75,9 @@ export function SiteHeader() {
             : "border-slate-200/70 bg-white"
         }`}
       >
-        <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 md:px-10">
+        <div className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-6 md:px-10 lg:px-6 min-[1360px]:px-0">
           <Link href="/" className="flex items-center gap-3 text-slate-900">
-            <BrandLogo className="h-9 sm:h-10" />
+            <BrandLogo className="h-10 sm:h-12" />
           </Link>
 
           <nav className="hidden items-center gap-8 text-[15px] text-slate-800 lg:flex xl:gap-14">
@@ -157,7 +157,7 @@ export function SiteHeader() {
             ? "circle(150% at calc(100% - 46px) 0px)"
             : "circle(0px at calc(100% - 46px) 0px)",
         }}
-        className="fixed inset-x-0 top-[81px] bottom-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-white bg-[radial-gradient(ellipse_at_100%_0%,#e6efff_0%,transparent_55%),radial-gradient(ellipse_at_0%_100%,#eeebff_0%,transparent_55%)] will-change-[clip-path] transition-[clip-path] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none lg:hidden"
+        className="fixed inset-x-0 top-[97px] bottom-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-white bg-[radial-gradient(ellipse_at_100%_0%,#e6efff_0%,transparent_55%),radial-gradient(ellipse_at_0%_100%,#eeebff_0%,transparent_55%)] will-change-[clip-path] transition-[clip-path] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none lg:hidden"
       >
         <nav className="relative mx-auto flex w-full max-w-7xl flex-col px-6 pt-6 md:px-10">
           <p

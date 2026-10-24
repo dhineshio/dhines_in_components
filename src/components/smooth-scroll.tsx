@@ -17,7 +17,7 @@ export function SmoothScroll() {
     const lenis = new Lenis({
       autoRaf: true,
       lerp: 0.1,
-      anchors: { offset: -80 },
+      anchors: { offset: -96 },
     });
     lenis.on("scroll", ScrollTrigger.update);
     return () => lenis.destroy();
