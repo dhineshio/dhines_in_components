@@ -23,6 +23,10 @@ export function SiteHeader() {
   // True while the menu is closing: its text stays in place until the circle
   // has fully closed (otherwise the text slides down mid-close and glitches).
   const [closing, setClosing] = useState(false);
+  // Circle radius that just covers the screen from the menu button. A bigger
+  // radius (e.g. 150%) makes the close look stuck: the circle shrinks off
+  // screen for a while before anything visible moves.
+  const [radius, setRadius] = useState(0);
   const closeMenu = () => {
     setClosing(true);
     setOpen(false);
@@ -69,9 +73,14 @@ export function SiteHeader() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 motion-reduce:transition-none ${
+        // The blur stays on once scrolled, even while the menu is open (only
+        // the background turns solid). Switching backdrop-filter off when the
+        // menu opened made the screen blink on phones.
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 motion-reduce:transition-none ${
+          scrolled ? "backdrop-blur-xl" : ""
+        } ${
           scrolled && !open
-            ? "border-slate-200 bg-white/75 backdrop-blur-xl"
+            ? "border-slate-200 bg-white/75"
             : "border-slate-200/70 bg-white"
         }`}
       >
@@ -115,6 +124,11 @@ export function SiteHeader() {
               onClick={() => {
                 if (open) closeMenu();
                 else {
+                  setRadius(
+                    Math.ceil(
+                      Math.hypot(window.innerWidth - 46, window.innerHeight),
+                    ),
+                  );
                   setClosing(false);
                   setOpen(true);
                 }
@@ -154,10 +168,14 @@ export function SiteHeader() {
         }}
         style={{
           clipPath: open
-            ? "circle(150% at calc(100% - 46px) 0px)"
+            ? `circle(${radius}px at calc(100% - 46px) 0px)`
             : "circle(0px at calc(100% - 46px) 0px)",
         }}
-        className="fixed inset-x-0 top-[97px] bottom-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-white bg-[radial-gradient(ellipse_at_100%_0%,#e6efff_0%,transparent_55%),radial-gradient(ellipse_at_0%_100%,#eeebff_0%,transparent_55%)] will-change-[clip-path] transition-[clip-path] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none lg:hidden"
+        className={`fixed inset-x-0 top-[97px] bottom-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-white bg-[radial-gradient(ellipse_at_100%_0%,#e6efff_0%,transparent_55%),radial-gradient(ellipse_at_0%_100%,#eeebff_0%,transparent_55%)] will-change-[clip-path] transition-[clip-path] motion-reduce:transition-none lg:hidden ${
+          open
+            ? "duration-700 ease-[cubic-bezier(0.65,0,0.35,1)]"
+            : "duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]"
+        }`}
       >
         <nav className="relative mx-auto flex w-full max-w-7xl flex-col px-6 pt-6 md:px-10">
           <p
