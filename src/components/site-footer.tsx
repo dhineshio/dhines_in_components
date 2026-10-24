@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
-import { BrandMark } from "@/components/site-header";
+import { BrandLogo } from "@/components/brand-logo";
 import { CONTACT } from "@/constants/contact";
 
 const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
@@ -48,8 +48,7 @@ export function SiteFooter() {
           {/* Brand */}
           <div>
             <Link href="/" className="flex items-center gap-3 text-slate-900">
-              <BrandMark />
-              <span className="text-2xl tracking-tight">Brand</span>
+              <BrandLogo className="h-10" />
             </Link>
             <p className="mt-5 max-w-xs leading-relaxed text-slate-500">
               Software, products and growth services for businesses and
@@ -117,7 +116,10 @@ export function SiteFooter() {
 
         {/* Bottom bar */}
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-slate-200 py-6 text-sm text-slate-500 sm:flex-row sm:items-center">
-          <p>© {new Date().getFullYear()} Brand. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} Threadstack Technologies. All rights
+            reserved.
+          </p>
           <a
             href="#top"
             className="group inline-flex items-center gap-2 text-slate-700 transition-colors hover:text-slate-950"
@@ -131,9 +133,9 @@ export function SiteFooter() {
       {/* Large faded brand word, cut off at the bottom edge */}
       <p
         aria-hidden
-        className="pointer-events-none -mb-[0.22em] bg-gradient-to-b from-slate-200 to-transparent bg-clip-text text-center text-[clamp(5rem,22vw,20rem)] leading-none font-semibold tracking-tight text-transparent select-none"
+        className="pointer-events-none -mb-[0.22em] bg-gradient-to-b from-slate-200 to-transparent bg-clip-text text-center text-[clamp(3rem,15.5vw,14rem)] leading-none font-semibold tracking-tight text-transparent select-none"
       >
-        Brand
+        Threadstack
       </p>
     </footer>
   );

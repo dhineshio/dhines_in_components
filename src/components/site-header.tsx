@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { BrandLogo } from "@/components/brand-logo";
 
 const NAV = [
   { label: "Services", href: "#services" },
@@ -10,15 +11,6 @@ const NAV = [
   { label: "Our Work", href: "#work" },
   { label: "About", href: "#about" },
 ];
-
-/** Bold "N"-style mark: two thick bars joined by a diagonal. */
-export function BrandMark() {
-  return (
-    <svg viewBox="0 0 32 32" aria-hidden className="size-8">
-      <path d="M2 2h7l14 20V2h7v28h-7L9 10v20H2z" fill="currentColor" />
-    </svg>
-  );
-}
 
 /**
  * Fixed header. At the top it blends into the page; once you scroll it turns
@@ -85,8 +77,7 @@ export function SiteHeader() {
       >
         <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-6 md:px-10">
           <Link href="/" className="flex items-center gap-3 text-slate-900">
-            <BrandMark />
-            <span className="text-2xl tracking-tight">Brand</span>
+            <BrandLogo className="h-9 sm:h-10" />
           </Link>
 
           <nav className="hidden items-center gap-8 text-[15px] text-slate-800 lg:flex xl:gap-14">
@@ -128,7 +119,7 @@ export function SiteHeader() {
                   setOpen(true);
                 }
               }}
-              className="grid size-11 place-items-center rounded-lg border border-slate-300 text-slate-900 transition-colors hover:bg-slate-50 lg:hidden"
+              className="grid size-11 place-items-center rounded-lg border border-[#2F5BFF]/30 text-[#2F5BFF] transition-colors hover:bg-[#EEF3FF] lg:hidden"
             >
               {/* Two lines that rotate into an X */}
               <span aria-hidden className="relative block h-3 w-5">
@@ -166,7 +157,7 @@ export function SiteHeader() {
             ? "circle(150% at calc(100% - 46px) 0px)"
             : "circle(0px at calc(100% - 46px) 0px)",
         }}
-        className="fixed inset-x-0 top-[81px] bottom-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-white bg-[radial-gradient(ellipse_at_100%_0%,#f1edff_0%,transparent_55%),radial-gradient(ellipse_at_0%_100%,#fdeef6_0%,transparent_55%)] will-change-[clip-path] transition-[clip-path] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none lg:hidden"
+        className="fixed inset-x-0 top-[81px] bottom-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-white bg-[radial-gradient(ellipse_at_100%_0%,#e6efff_0%,transparent_55%),radial-gradient(ellipse_at_0%_100%,#eeebff_0%,transparent_55%)] will-change-[clip-path] transition-[clip-path] duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] motion-reduce:transition-none lg:hidden"
       >
         <nav className="relative mx-auto flex w-full max-w-7xl flex-col px-6 pt-6 md:px-10">
           <p
@@ -185,7 +176,7 @@ export function SiteHeader() {
             >
               <span
                 style={{ transitionDelay: open ? `${220 + i * 70}ms` : "0ms" }}
-                className={`${slide} w-6 text-xs font-medium tracking-widest text-[#7c5cf0]`}
+                className={`${slide} w-6 text-xs font-medium tracking-widest text-[#2F5BFF]`}
               >
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -197,7 +188,7 @@ export function SiteHeader() {
               </span>
               <span
                 style={{ transitionDelay: open ? `${300 + i * 70}ms` : "0ms" }}
-                className={`${fade} ml-auto grid size-10 shrink-0 place-items-center rounded-full border border-slate-200 text-slate-700 group-active:bg-slate-950 group-active:text-white`}
+                className={`${fade} ml-auto grid size-10 shrink-0 place-items-center rounded-full border border-[#2F5BFF]/20 bg-[#EEF3FF] text-[#2F5BFF] group-active:bg-[#2F5BFF] group-active:text-white`}
               >
                 <ArrowRight className="size-4" />
               </span>
@@ -215,7 +206,7 @@ export function SiteHeader() {
           <a
             href="#talk"
             onClick={() => closeMenu()}
-            className="flex items-center justify-center gap-3 rounded-xl bg-slate-950 px-5 py-4 text-base font-medium text-white"
+            className="flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] px-5 py-4 text-base font-medium text-white"
           >
             Talk to us
             <ArrowRight className="size-4" />
@@ -223,7 +214,7 @@ export function SiteHeader() {
           <a
             href="#contact"
             onClick={() => closeMenu()}
-            className="rounded-xl border border-slate-300 bg-white px-5 py-4 text-center text-base font-medium text-slate-900"
+            className="rounded-xl border border-[#2F5BFF]/30 bg-white px-5 py-4 text-center text-base font-medium text-[#2F5BFF]"
           >
             Contact us
           </a>

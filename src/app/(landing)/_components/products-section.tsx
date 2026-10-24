@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ArrowRight, CircleCheck } from "lucide-react";
 import { ParticleWaves, type WaveTheme } from "@/components/particle-waves";
+import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/utils";
 
 const PRODUCTS: {
@@ -23,9 +24,9 @@ const PRODUCTS: {
     text: "Complete restaurant management with POS, CRM, QR menu ordering, table booking and more.",
     features: ["POS & Billing", "Table Booking", "QR Menu", "Customer CRM"],
     href: "#relaytable",
-    tint: "from-[#EEF3FF] to-[#F7F9FF]",
-    chip: "text-[#4F74E0]",
-    check: "text-[#4F74E0]",
+    tint: "from-[#EAF4FF] to-[#F7FAFF]",
+    chip: "text-[#0A84FF]",
+    check: "text-[#0A84FF]",
     wave: "blue",
   },
   {
@@ -39,10 +40,10 @@ const PRODUCTS: {
       "CRM Integration",
     ],
     href: "#voice-ai",
-    tint: "from-[#F3EFFF] to-[#FAF8FF]",
-    chip: "text-[#7C5CF0]",
-    check: "text-[#8B6CF5]",
-    wave: "violet",
+    tint: "from-[#EEF2FF] to-[#F8F9FF]",
+    chip: "text-[#2F5BFF]",
+    check: "text-[#2F5BFF]",
+    wave: "indigo",
   },
   {
     name: "NGO CRM",
@@ -55,10 +56,10 @@ const PRODUCTS: {
       "Staff & Volunteers",
     ],
     href: "#ngo-crm",
-    tint: "from-[#FDEFF4] to-[#FFF8FA]",
-    chip: "text-[#DB4F72]",
-    check: "text-[#EC5B7E]",
-    wave: "red",
+    tint: "from-[#F2EEFF] to-[#FAF8FF]",
+    chip: "text-[#5B3BF0]",
+    check: "text-[#5B3BF0]",
+    wave: "aurora",
   },
 ];
 
@@ -69,14 +70,19 @@ export function ProductsSection() {
       className="relative z-10 mx-auto w-full max-w-7xl px-6 py-14 md:px-10"
     >
       {/* Heading */}
-      <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <Reveal
+        distance={40}
+        duration={0.9}
+        threshold={0.15}
+        className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"
+      >
         <div>
           <p className="text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
             Our products
           </p>
           <h2 className="mt-4 text-4xl leading-[1.1] font-semibold tracking-tight text-slate-950 md:text-5xl">
             Powerful products for{" "}
-            <span className="bg-gradient-to-r from-[#3f5fb5] via-[#7c5cf0] to-[#db5fa8] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] bg-clip-text text-transparent">
               a better tomorrow.
             </span>
           </h2>
@@ -92,10 +98,16 @@ export function ProductsSection() {
           View all products
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
         </a>
-      </div>
+      </Reveal>
 
       {/* Cards */}
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
+      <Reveal
+        distance={50}
+        duration={0.8}
+        stagger={0.12}
+        threshold={0.12}
+        className="mt-12 grid gap-6 lg:grid-cols-3"
+      >
         {PRODUCTS.map((p, i) => {
           return (
             <article
@@ -164,7 +176,7 @@ export function ProductsSection() {
             </article>
           );
         })}
-      </div>
+      </Reveal>
     </section>
   );
 }

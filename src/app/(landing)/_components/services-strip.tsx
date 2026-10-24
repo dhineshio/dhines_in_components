@@ -35,7 +35,7 @@ function ServiceList({ hidden }: { hidden?: boolean }) {
           key={label}
           className="flex items-center gap-4 border-r border-slate-200 px-8 py-1 whitespace-nowrap"
         >
-          <Icon className="size-7 shrink-0 stroke-[1.4] text-slate-800" />
+          <Icon className="size-7 shrink-0 stroke-[1.4] text-[#2F5BFF]" />
           <span className="text-slate-600">{label}</span>
         </li>
       ))}
@@ -47,7 +47,7 @@ export function ServicesStrip() {
   return (
     <section className="relative z-10 mx-auto w-full max-w-7xl pt-6">
       <style>{styles}</style>
-      <p className="px-6 text-[11px] font-medium tracking-[0.25em] text-[#3f5fb5] uppercase md:px-10">
+      <p className="px-6 text-[11px] font-medium tracking-[0.25em] text-[#2F5BFF] uppercase md:px-10">
         Services we offer
       </p>
 

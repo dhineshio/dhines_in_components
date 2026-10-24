@@ -1,6 +1,6 @@
 import { DotSphere } from "@/components/dot-sphere";
-import { OrbitArt } from "@/components/orbit-art";
 import { SiteFooter } from "@/components/site-footer";
+import { HeroShards } from "@/components/hero-shards";
 import { SiteHeader } from "@/components/site-header";
 import { ContactSection } from "./_components/contact-section";
 import { FaqSection } from "./_components/faq-section";
@@ -29,19 +29,10 @@ export default function LandingPage() {
       <div className="relative flex flex-col overflow-hidden border-b border-slate-200 lg:h-svh lg:min-h-[680px]">
         {/* Spacer for the fixed header */}
         <div aria-hidden className="h-[81px] shrink-0" />
-        {/* Soft color glows behind the orbit art */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-20 right-0 hidden h-[calc(100%-5rem)] w-[55%] lg:block"
-        >
-          <div className="absolute top-[15%] right-[30%] size-80 rounded-full bg-blue-300/30 blur-3xl" />
-          <div className="absolute top-[35%] right-[8%] size-72 rounded-full bg-violet-300/30 blur-3xl" />
-          <div className="absolute top-[58%] right-[28%] size-64 rounded-full bg-pink-300/25 blur-3xl" />
-        </div>
-        {/* Orbit art on the right side, below the header */}
-        <div className="absolute top-20 right-0 hidden aspect-[952/995] h-[calc(100%-5rem)] lg:block">
-          <OrbitArt className="absolute inset-0 size-full" />
-        </div>
+        {/* Diagonal glass bands in the brand blues, right side (large screens).
+            Fades out toward the text on the left. z-40 puts it above the
+            vertical guide line (z-30), so the line sits behind the art. */}
+        <HeroShards className="absolute top-20 right-0 z-40 hidden h-[calc(100%-5rem)] w-[60%] [mask-image:linear-gradient(to_right,transparent,#000_35%)] lg:block" />
         <Hero />
         {/* Sphere sits at the bottom center; only its top part shows. */}
         <DotSphere className="absolute bottom-0 left-1/2 aspect-square w-[min(700px,150vw)] -translate-x-1/2 translate-y-[62%]" />

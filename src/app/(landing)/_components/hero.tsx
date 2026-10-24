@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { Reveal as AnimatedContent } from "@/components/reveal";
 import { ArrowRight, Box, ChartNoAxesColumn, ShieldCheck } from "lucide-react";
 
 const TAGS = ["Software", "SaaS", "AI Solutions"];
@@ -11,79 +11,51 @@ const FEATURES = [
     icon: Box,
     title: "Custom Software",
     text: "Built around your needs",
-    color: "text-blue-500",
+    color: "text-[#0A84FF]",
   },
   {
     icon: ChartNoAxesColumn,
     title: "Scalable Solutions",
     text: "Designed to grow",
-    color: "text-violet-500",
+    color: "text-[#2F5BFF]",
   },
   {
     icon: ShieldCheck,
     title: "Reliable Support",
     text: "With you at every step",
-    color: "text-pink-500",
+    color: "text-[#5B3BF0]",
   },
 ];
 
-// Entrance animation (CSS only), "mask reveal": heading words slide up out of
-// an invisible line (each word is clipped by its own box), and the rest fades
-// in and rises a little, one after another. The blue accent gets a soft shine
-// that repeats. Everything is still for reduced motion.
+// The blue accent in the heading gets a soft shine that repeats (not a
+// reveal). Still for reduced motion.
 const styles = `
-  .hero-in {
-    opacity: 0;
-    animation: hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    animation-delay: var(--d, 0s);
-  }
-  .hero-mask {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    padding-bottom: 0.08em; /* room for descenders (y, g) */
-  }
-  .hero-word {
-    display: inline-block;
-    transform: translateY(110%);
-    animation: hero-word 0.9s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-    animation-delay: var(--d, 0s);
-  }
   .hero-shine {
-    /* shine layer on top of a blue -> purple -> pink gradient */
     background:
       linear-gradient(100deg, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%) 120% 0 / 250% 100% no-repeat,
-      linear-gradient(90deg, #3f5fb5, #7c5cf0 55%, #db5fa8);
+      linear-gradient(90deg, #0A84FF, #2F5BFF 50%, #5B3BF0);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     /* one soft pass, then a pause, on repeat */
-    animation: hero-shine 5s ease-in-out infinite;
-    animation-delay: var(--d, 0s);
+    animation: hero-shine 5s ease-in-out 1.2s infinite;
   }
-  @keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes hero-word { to { transform: none; } }
   @keyframes hero-shine { 0% { background-position: 120% 0, 0 0; } 35%, 100% { background-position: -20% 0, 0 0; } }
   @media (prefers-reduced-motion: reduce) {
-    .hero-in, .hero-word { animation: none; opacity: 1; transform: none; }
     .hero-shine { animation: none; }
   }
 `;
 
-const delay = (seconds: number) => ({ "--d": `${seconds}s` }) as CSSProperties;
-
-/** Splits text into words that slide up one after another. */
-function Words({ text, start }: { text: string; start: number }) {
-  return text.split(" ").map((word, i) => (
-    <span key={i} className="hero-mask">
-      <span className="hero-word" style={delay(start + i * 0.06)}>
-        {word}&nbsp;
-      </span>
-    </span>
-  ));
-}
-
-const accentStart = 0.15 + HEADING.split(" ").length * 0.06;
+// React Bits AnimatedContent is the only reveal: each block fades and rises
+// into place on load, one after another.
+// Opacity + movement only: animating a blur filter is costly and made the
+// first frames stutter.
+const REVEAL = {
+  trigger: "mount",
+  distance: 24,
+  duration: 0.9,
+  ease: "power3.out",
+} as const;
 
 export function Hero() {
   return (
@@ -91,46 +63,35 @@ export function Hero() {
       <style>{styles}</style>
       <div className="pointer-events-auto max-w-2xl">
         {/* Small label */}
-        <p
-          className="hero-in flex flex-wrap items-center gap-x-3 text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase"
-          style={delay(0)}
-        >
-          {TAGS.map((tag, i) => (
-            <span key={tag} className="flex items-center gap-3">
-              {i > 0 && <span className="size-1 rounded-full bg-slate-400" />}
-              {tag}
-            </span>
-          ))}
-        </p>
-
-        <h1 className="mt-6 text-4xl leading-[1.08] font-medium tracking-tight text-slate-950 md:text-[3.5rem]">
-          <span className="sr-only">
-            {HEADING} {HEADING_ACCENT}
-          </span>
-          <span aria-hidden>
-            <Words text={HEADING} start={0.15} />
-            <span className="hero-mask">
-              <span className="hero-word" style={delay(accentStart)}>
-                <span className="hero-shine" style={delay(accentStart + 0.6)}>
-                  {HEADING_ACCENT}
-                </span>
+        <AnimatedContent {...REVEAL} delay={0}>
+          <p className="flex flex-wrap items-center gap-x-3 text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
+            {TAGS.map((tag, i) => (
+              <span key={tag} className="flex items-center gap-3">
+                {i > 0 && <span className="size-1 rounded-full bg-slate-400" />}
+                {tag}
               </span>
-            </span>
-          </span>
-        </h1>
+            ))}
+          </p>
+        </AnimatedContent>
 
-        <p
-          className="hero-in mt-5 max-w-xl text-base leading-relaxed text-slate-500 md:text-lg"
-          style={delay(accentStart + 0.2)}
-        >
-          We build scalable SaaS products, custom software, and AI-powered
-          solutions for businesses and non-profit organisations.
-        </p>
+        <AnimatedContent {...REVEAL} delay={0.1}>
+          <h1 className="mt-6 text-4xl leading-[1.08] font-medium tracking-tight text-slate-950 md:text-[3.5rem]">
+            {HEADING} <span className="hero-shine">{HEADING_ACCENT}</span>
+          </h1>
+        </AnimatedContent>
+
+        <AnimatedContent {...REVEAL} delay={0.2}>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-500 md:text-lg">
+            We build scalable SaaS products, custom software, and AI-powered
+            solutions for businesses and non-profit organisations.
+          </p>
+        </AnimatedContent>
 
         {/* Actions */}
-        <div
-          className="hero-in mt-8 flex flex-wrap items-center gap-7"
-          style={delay(accentStart + 0.35)}
+        <AnimatedContent
+          {...REVEAL}
+          delay={0.3}
+          className="mt-8 flex flex-wrap items-center gap-7"
         >
           <a
             href="#services"
@@ -145,15 +106,21 @@ export function Hero() {
           >
             See our work
           </a>
-        </div>
+        </AnimatedContent>
 
         {/* Features */}
-        <ul className="mt-12 grid gap-6 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-slate-200">
-          {FEATURES.map(({ icon: Icon, title, text, color }, i) => (
-            <li
+        <AnimatedContent
+          {...REVEAL}
+          delay={0.4}
+          stagger={0.08}
+          role="list"
+          className="mt-12 grid gap-6 sm:grid-cols-3 sm:gap-0 sm:divide-x sm:divide-slate-200"
+        >
+          {FEATURES.map(({ icon: Icon, title, text, color }) => (
+            <div
               key={title}
-              className="hero-in flex items-start gap-4 sm:px-6 sm:first:pl-0"
-              style={delay(accentStart + 0.5 + i * 0.1)}
+              role="listitem"
+              className="flex items-start gap-4 sm:px-6 sm:first:pl-0"
             >
               <Icon
                 className={`mt-0.5 size-6 shrink-0 stroke-[1.5] ${color}`}
@@ -162,9 +129,9 @@ export function Hero() {
                 <p className="text-sm text-slate-700">{title}</p>
                 <p className="mt-1 text-xs text-slate-500">{text}</p>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </AnimatedContent>
       </div>
     </section>
   );

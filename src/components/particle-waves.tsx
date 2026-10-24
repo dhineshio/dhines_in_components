@@ -64,8 +64,9 @@ const THEMES: Record<
   },
   // Wide blue -> purple -> pink wave for section backgrounds.
   aurora: {
-    colors: ["#3b82f6", "#a855f7", "#f472b6"],
-    glow: "#f5d0fe",
+    // Threadstack brand: bright blue -> royal blue -> violet
+    colors: ["#0A84FF", "#2F5BFF", "#5B3BF0"],
+    glow: "#dbe6ff",
     tilt: 0.6,
     phase: 0.4,
   },
@@ -76,6 +77,7 @@ const PERIOD = 6.1; // one dot + one gap, so the flow loops seamlessly
 
 const styles = `
   .pw-flow { animation: pw-flow linear infinite; }
+  @media (max-width: 1023px) { .pw-flow { animation: none; } }
   .pw-sway { animation: pw-sway 7s ease-in-out infinite alternate; }
   .pw-glow { animation: pw-glow 6s ease-in-out infinite alternate; }
   @keyframes pw-flow { to { stroke-dashoffset: -${PERIOD}; } }

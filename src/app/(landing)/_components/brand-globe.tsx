@@ -1,8 +1,10 @@
 "use client";
 
-// The globe for the "Why choose us" brand tile. three.js is heavy, so it is
-// loaded only in the browser, and only when this tile is rendered.
+// The globe for the "Why choose us" brand tile. three.js and the country dot
+// math are heavy, so the globe loads only when the tile is close to the
+// screen (not on page load, where it froze the hero's reveal).
 
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { GlobeArc, GlobeConfig } from "@/components/ui/globe";
 
@@ -11,17 +13,17 @@ const World = dynamic(
   { ssr: false },
 );
 
-const CONFIG: GlobeConfig = {
+export const CONFIG: GlobeConfig = {
   pointSize: 4,
-  globeColor: "#34258f",
+  globeColor: "#1E2A9E",
   showAtmosphere: true,
-  atmosphereColor: "#e9d5ff",
+  atmosphereColor: "#C7D7FF",
   atmosphereAltitude: 0.14,
-  emissive: "#34258f",
+  emissive: "#1E2A9E",
   emissiveIntensity: 0.35,
   shininess: 0.9,
   polygonColor: "rgba(255,255,255,0.85)",
-  ambientLight: "#c4b5fd",
+  ambientLight: "#A9C2FF",
   directionalLeftLight: "#ffffff",
   directionalTopLight: "#ffffff",
   pointLight: "#ffffff",
@@ -47,9 +49,9 @@ const CITIES: [number, number][] = [
   [52.52, 13.4], // Berlin
   [37.77, -122.42], // San Francisco
 ];
-const COLORS = ["#ffffff", "#fde68a", "#fbcfe8"];
+const COLORS = ["#ffffff", "#8EC5FF", "#C7B8FF"];
 
-const ARCS: GlobeArc[] = CITIES.map(([lat, lng], i) => ({
+export const ARCS: GlobeArc[] = CITIES.map(([lat, lng], i) => ({
   order: (i % 5) * 0.6, // small stagger, so arcs start one after another
   startLat: CHENNAI.lat,
   startLng: CHENNAI.lng,
@@ -60,5 +62,38 @@ const ARCS: GlobeArc[] = CITIES.map(([lat, lng], i) => ({
 }));
 
 export function BrandGlobe() {
-  return <World globeConfig={CONFIG} data={ARCS} />;
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Load a little before it scrolls in; once loaded, keep it.
+    const loader = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNear(true);
+          loader.disconnect();
+        }
+      },
+      { rootMargin: "400px 0px" },
+    );
+    // Animate only while it is on screen.
+    const watcher = new IntersectionObserver(([entry]) =>
+      setVisible(entry.isIntersecting),
+    );
+    loader.observe(el);
+    watcher.observe(el);
+    return () => {
+      loader.disconnect();
+      watcher.disconnect();
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className="size-full">
+      {near && <World globeConfig={CONFIG} data={ARCS} paused={!visible} />}
+    </div>
+  );
 }

@@ -19,7 +19,12 @@ import { useEffect, useRef } from "react";
 import { Camera, Geometry, Mesh, Program, Renderer, Transform } from "ogl";
 import { cn } from "@/lib/utils";
 
-const DOTS = 4500; // fewer dots = more space between them
+// Fewer dots on phones (also = more space between them). Read once on load.
+const DOTS =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 1023px)").matches
+    ? 2600
+    : 4500;
 const DOT_SIZE = 2.2; // px when the canvas is 720px
 const COLOR: [number, number, number] = [0.3, 0.33, 0.4]; // slate grey
 const SPIN_SPEED = 0.08; // slow auto spin, radians per second
@@ -122,7 +127,8 @@ export function DotSphere({ className }: { className?: string }) {
     const container = containerRef.current;
     if (!container) return;
 
-    const dpr = Math.min(window.devicePixelRatio, 2);
+    // Phones have very dense screens; 1.5x is plenty for small dots.
+    const dpr = Math.min(window.devicePixelRatio, DOTS < 4500 ? 1.5 : 2);
     const renderer = new Renderer({
       dpr,
       alpha: true,
@@ -234,6 +240,7 @@ export function DotSphere({ className }: { className?: string }) {
     container.addEventListener("pointerleave", onPointerLeave);
 
     // --- Simulation --------------------------------------------------------
+    let active = false; // dots still moving from a push
     const step = (dt: number) => {
       scene.updateMatrixWorld();
       const m = sphere.worldMatrix;
@@ -318,7 +325,9 @@ export function DotSphere({ className }: { className?: string }) {
       // Slow auto spin only.
       if (!reduceMotion) sphere.rotation.y += SPIN_SPEED * dt;
 
-      step(dt);
+      // The per-dot physics only matters while the cursor pushes dots or they
+      // are still springing back; otherwise skip it (always true on touch).
+      if (hover > 0.001 || active) active = step(dt);
       render();
     };
     const play = () => {

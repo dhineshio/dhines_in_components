@@ -12,6 +12,7 @@
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { PROJECTS, type Project } from "@/constants/projects";
+import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/utils";
 
 type Size = "big" | "wide" | "tall" | "small";
@@ -31,20 +32,20 @@ const SLOTS: {
   slide: Slide;
   imageLeft?: boolean;
 }[] = [
-  { id: "skillup-languages", size: "big", tint: "bg-[#F3EFFF]", slide: "up" },
-  { id: "a11y-alt-product", size: "wide", tint: "bg-[#EEF3FF]", slide: "left" }, // top-right
+  { id: "skillup-languages", size: "big", tint: "bg-[#F1EEFF]", slide: "up" },
+  { id: "a11y-alt-product", size: "wide", tint: "bg-[#EAF4FF]", slide: "left" }, // top-right
   {
     id: "sri-karpom-karpipom",
     size: "small",
-    tint: "bg-[#EEF3FF]",
+    tint: "bg-[#EAF4FF]",
     slide: "up",
   },
-  { id: "rvr-engineering", size: "small", tint: "bg-[#FDEFF7]", slide: "up" },
-  { id: "topgrade-app", size: "tall", tint: "bg-[#FFF3EA]", slide: "up" },
-  { id: "topgrade", size: "wide", tint: "bg-[#FFF3EA]", slide: "left" }, // middle
-  { id: "topgrade-admin", size: "small", tint: "bg-[#F3EFFF]", slide: "down" },
+  { id: "rvr-engineering", size: "small", tint: "bg-[#EEF2FF]", slide: "up" },
+  { id: "topgrade-app", size: "tall", tint: "bg-[#EFEEFF]", slide: "up" },
+  { id: "topgrade", size: "wide", tint: "bg-[#EFEEFF]", slide: "left" }, // middle
+  { id: "topgrade-admin", size: "small", tint: "bg-[#F1EEFF]", slide: "down" },
   { id: "a11y-digitech", size: "small", tint: "bg-[#F5F5F7]", slide: "up" },
-  { id: "agamagizh", size: "wide", tint: "bg-[#FDEFF7]", slide: "left" }, // bottom-right
+  { id: "agamagizh", size: "wide", tint: "bg-[#EEF2FF]", slide: "left" }, // bottom-right
 ];
 
 const SLIDE: Record<Slide, string> = {
@@ -68,8 +69,8 @@ const styles = `
     padding: 2px;
     background: conic-gradient(
       from var(--bento-angle),
-      transparent 0%, #4F74E0 12%, #7C5CF0 24%, #DB5FA8 36%, transparent 48%,
-      transparent 50%, #4F74E0 62%, #7C5CF0 74%, #DB5FA8 86%, transparent 98%
+      transparent 0%, #0A84FF 12%, #2F5BFF 24%, #5B3BF0 36%, transparent 48%,
+      transparent 50%, #0A84FF 62%, #2F5BFF 74%, #5B3BF0 86%, transparent 98%
     );
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -155,20 +156,21 @@ function Tile({
       <div
         className={cn(
           "relative min-h-0 flex-1",
-          // Below lg every tile is stacked, so give the image a fixed shape.
-          "aspect-[16/10] lg:aspect-auto",
-          wide ? "lg:my-5 lg:mr-0 lg:ml-0" : "mx-5 lg:mx-6",
+          // Below lg every tile looks the same: image inset from both sides,
+          // fixed 16:10 shape, rounded top. Wide tiles change only on lg.
+          "mx-5 aspect-[16/10] lg:aspect-auto",
+          wide ? "lg:mx-0 lg:my-5" : "lg:mx-6",
         )}
       >
         <div
           className={cn(
             "absolute inset-0 overflow-hidden shadow-[0_10px_40px_-18px_rgba(15,23,42,0.35)] transition-transform duration-500 ease-out motion-reduce:transition-none",
             SLIDE[slide],
-            wide
-              ? imageLeft
-                ? "rounded-r-xl"
-                : "rounded-l-xl"
-              : "rounded-t-xl",
+            "rounded-t-xl",
+            wide &&
+              (imageLeft
+                ? "lg:rounded-none lg:rounded-r-xl"
+                : "lg:rounded-none lg:rounded-l-xl"),
           )}
         >
           <Image
@@ -206,13 +208,18 @@ export function ProjectsSection() {
     >
       <style>{styles}</style>
       {/* Heading */}
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal
+        distance={40}
+        duration={0.9}
+        threshold={0.15}
+        className="mx-auto max-w-2xl text-center"
+      >
         <p className="text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
           Our work
         </p>
         <h2 className="mt-4 text-4xl leading-[1.1] font-semibold tracking-tight text-slate-950 md:text-5xl">
           Projects we&apos;ve{" "}
-          <span className="bg-gradient-to-r from-[#3f5fb5] via-[#7c5cf0] to-[#db5fa8] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] bg-clip-text text-transparent">
             built and shipped.
           </span>
         </h2>
@@ -220,9 +227,15 @@ export function ProjectsSection() {
           Websites, portals, products and mobile apps for education, NGOs and
           growing businesses.
         </p>
-      </div>
+      </Reveal>
 
-      <div className="mt-12 grid grid-flow-dense gap-4 sm:grid-cols-2 lg:auto-rows-[250px] lg:grid-cols-4">
+      <Reveal
+        distance={50}
+        duration={0.8}
+        stagger={0.08}
+        threshold={0.1}
+        className="mt-12 grid grid-flow-dense gap-4 sm:grid-cols-2 lg:auto-rows-[250px] lg:grid-cols-4"
+      >
         {SLOTS.map(({ id, size, tint, slide, imageLeft }) => {
           const project = PROJECTS.find((p) => p.id === id);
           return project ? (
@@ -236,7 +249,7 @@ export function ProjectsSection() {
             />
           ) : null;
         })}
-      </div>
+      </Reveal>
     </section>
   );
 }

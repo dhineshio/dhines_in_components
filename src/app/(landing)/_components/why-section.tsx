@@ -7,6 +7,7 @@
 
 import Image from "next/image";
 import { ArrowRight, CornerDownRight, Star } from "lucide-react";
+import { Reveal } from "@/components/reveal";
 import { BrandGlobe } from "./brand-globe";
 
 const THUMBS = [
@@ -14,6 +15,14 @@ const THUMBS = [
   "/projects/topgrade-screen.webp",
   "/projects/agamagizh-screen.webp",
   "/projects/sri-karpom-karpipom-screen.webp",
+  "/projects/a11ydigitech-screen.webp",
+  "/projects/rvr-engineering-portal.webp",
+];
+
+// Each column gets different projects, so the same one never sits side by side.
+const COLUMNS = [
+  THUMBS.filter((_, i) => i % 2 === 0),
+  THUMBS.filter((_, i) => i % 2 === 1),
 ];
 
 // Faces that travel around a circle, evenly spaced. Free stock portraits
@@ -29,17 +38,15 @@ const ringStyles = `
   .why-ring { animation: why-spin 24s linear infinite; }
   .why-logo { animation: why-spin 24s linear infinite reverse; }
   @keyframes why-spin { to { transform: rotate(360deg); } }
+  /* Screenshot columns: move by half (one copy plus its gap) and loop */
+  .why-col { animation: why-up 30s linear infinite; }
+  .why-col-down { animation-direction: reverse; }
+  .group:hover .why-col { animation-play-state: paused; }
+  @keyframes why-up { to { transform: translateY(calc(-50% - 6px)); } }
   @media (prefers-reduced-motion: reduce) {
-    .why-ring, .why-logo { animation: none; }
+    .why-ring, .why-logo, .why-col { animation: none; }
   }
 `;
-
-// Resting and hover positions of the three fanned screenshots (back to front).
-const FAN = [
-  "-translate-x-[88%] -translate-y-[6%] -rotate-[10deg] group-hover:-translate-x-[104%] group-hover:-rotate-[16deg]",
-  "-translate-x-[12%] -translate-y-[6%] rotate-[10deg] group-hover:translate-x-[4%] group-hover:rotate-[16deg]",
-  "-translate-x-1/2 -translate-y-[14%] group-hover:-translate-y-[26%]",
-];
 
 const tile = "relative min-h-[420px] overflow-hidden rounded-3xl";
 
@@ -49,10 +56,16 @@ export function WhySection() {
       id="about"
       className="relative z-10 mx-auto w-full max-w-7xl px-6 py-14 md:px-10"
     >
+      <style>{ringStyles}</style>
       {/* Header row */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-6">
+      <Reveal
+        distance={30}
+        duration={0.8}
+        threshold={0.15}
+        className="flex items-center justify-between border-b border-slate-200 pb-6"
+      >
         <p className="flex items-center gap-2 text-sm font-medium tracking-[0.15em] text-slate-900 uppercase">
-          <CornerDownRight className="size-4 text-slate-400" />
+          <CornerDownRight className="size-4 text-[#2F5BFF]" />
           Why choose us
         </p>
         <a
@@ -62,13 +75,22 @@ export function WhySection() {
           Contact us
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
         </a>
-      </div>
+      </Reveal>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Tiles reveal one by one on scroll */}
+      <Reveal
+        role="list"
+        distance={50}
+        duration={0.8}
+        stagger={0.12}
+        threshold={0.1}
+        className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
         {/* 1. Gradient tile: text on top, a big globe in the bottom-right
             corner */}
         <div
-          className={`${tile} bg-gradient-to-br from-[#3f5fb5] via-[#7c5cf0] to-[#db5fa8] p-7 text-white`}
+          role="listitem"
+          className={`${tile} bg-gradient-to-br from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] p-7 text-white`}
         >
           <p className="relative z-10 text-xl font-semibold tracking-tight">
             Built in Chennai, used everywhere
@@ -84,8 +106,11 @@ export function WhySection() {
         </div>
 
         {/* 2. Testimonial (placeholder text) */}
-        <figure className={`${tile} flex flex-col bg-slate-50 p-7`}>
-          <div className="flex gap-1 text-slate-900" aria-label="5 out of 5">
+        <figure
+          role="listitem"
+          className={`${tile} flex flex-col bg-slate-50 p-7`}
+        >
+          <div className="flex gap-1 text-[#2F5BFF]" aria-label="5 out of 5">
             {Array.from({ length: 5 }, (_, i) => (
               <Star key={i} className="size-4 fill-current" />
             ))}
@@ -97,51 +122,64 @@ export function WhySection() {
             </strong>
             , and the product works well for our users.
           </blockquote>
-          <figcaption className="mt-auto border-l-2 border-slate-200 pt-8 pl-4">
+          <figcaption className="mt-auto border-l-2 border-[#2F5BFF]/40 pt-8 pl-4">
             <p className="font-medium text-slate-950">Client name</p>
             <p className="mt-0.5 text-sm text-slate-500">Role, Company</p>
           </figcaption>
         </figure>
 
-        {/* 3. Projects delivered: big gradient number, and a fan of real
-            project screenshots that spreads out on hover */}
+        {/* 3. Projects delivered: big gradient number, and a tilted wall of
+            real project screenshots in two columns that scroll slowly in
+            opposite directions (pauses on hover) */}
         <div
-          className={`${tile} group border border-slate-900/10 bg-[#F3EFFF] p-7`}
+          role="listitem"
+          className={`${tile} group border border-[#2F5BFF]/15 bg-[radial-gradient(ellipse_at_80%_100%,#DCE6FF_0%,transparent_60%),linear-gradient(180deg,#F5F7FF,#EEF2FF)] p-7`}
         >
-          <p className="bg-gradient-to-r from-[#3f5fb5] via-[#7c5cf0] to-[#db5fa8] bg-clip-text text-6xl font-semibold tracking-tight text-transparent">
+          <p className="relative z-10 bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] bg-clip-text text-6xl font-semibold tracking-tight text-transparent">
             18+
           </p>
-          <p className="mt-2 text-slate-600">Projects delivered</p>
+          <p className="relative z-10 mt-2 text-slate-600">
+            Projects delivered
+          </p>
 
-          <div className="absolute inset-x-0 bottom-0 h-[52%]">
-            {THUMBS.slice(0, 3).map((src, i) => (
-              <div
-                key={src}
-                className={`absolute bottom-[-8%] left-1/2 aspect-[16/10] w-[62%] origin-bottom overflow-hidden rounded-xl border-4 border-white bg-white shadow-[0_14px_30px_-14px_rgba(15,23,42,0.45)] transition-transform duration-500 ease-out motion-reduce:transition-none ${FAN[i]}`}
-              >
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="240px"
-                  className="object-cover object-left-top"
-                />
-              </div>
-            ))}
+          <div className="absolute inset-x-0 bottom-0 h-[64%] [mask-image:linear-gradient(to_bottom,transparent,#000_30%)] [perspective:900px]">
+            <div className="absolute inset-[-20%_-10%] flex gap-3 [transform:rotateX(28deg)_rotateZ(-14deg)]">
+              {COLUMNS.map((col, c) => (
+                <div
+                  key={c}
+                  className={`why-col flex w-1/2 flex-col gap-3 ${c ? "why-col-down" : ""}`}
+                >
+                  {/* Two copies so the loop has no gap */}
+                  {[...col, ...col].map((src, i) => (
+                    <div
+                      key={i}
+                      className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-lg border-2 border-white bg-white shadow-[0_10px_24px_-12px_rgba(47,91,255,0.45)]"
+                    >
+                      <Image
+                        src={src}
+                        alt=""
+                        fill
+                        sizes="160px"
+                        className="object-cover object-left-top"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* 4. Satisfaction + client logos on an arc */}
-        <div className={`${tile} bg-slate-50 p-7`}>
-          <p className="text-5xl font-medium tracking-tight text-slate-950">
+        <div role="listitem" className={`${tile} bg-slate-50 p-7`}>
+          <p className="bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] bg-clip-text text-6xl font-semibold tracking-tight text-transparent">
             98%
           </p>
           <p className="mt-2 text-slate-600">Client satisfaction rate</p>
           {/* Ring centered near the bottom-right corner, so about half of it
               shows. Logos sit at equal angles around it. */}
-          <style>{ringStyles}</style>
           <div className="absolute right-[-90px] bottom-[-90px] size-[260px]">
-            <div className="absolute inset-0 rounded-full border border-dashed border-slate-300" />
+            <div className="absolute inset-0 rounded-full border border-dashed border-[#2F5BFF]/30" />
             <div className="why-ring absolute inset-0">
               {RING.map((src, i) => (
                 <span
@@ -166,7 +204,7 @@ export function WhySection() {
             </div>
           </div>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -55,7 +55,12 @@ export type GlobeConfig = {
   autoRotateSpeed?: number;
 };
 
-type WorldProps = { globeConfig: GlobeConfig; data: GlobeArc[] };
+type WorldProps = {
+  globeConfig: GlobeConfig;
+  data: GlobeArc[];
+  /** Stop drawing frames (e.g. while the globe is off screen). */
+  paused?: boolean;
+};
 
 function GlobeMesh({ globeConfig, data }: WorldProps) {
   const groupRef = useRef<Group | null>(null);
@@ -183,7 +188,7 @@ function GlobeMesh({ globeConfig, data }: WorldProps) {
 }
 
 export function World(props: WorldProps) {
-  const { globeConfig } = props;
+  const { globeConfig, paused } = props;
   const { scene, camera } = useMemo(() => {
     const s = new Scene();
     s.fog = new Fog(0xffffff, 400, 2000);
@@ -194,8 +199,11 @@ export function World(props: WorldProps) {
     <Canvas
       scene={scene}
       camera={camera}
-      dpr={[1, 2]}
-      gl={{ alpha: true, antialias: true }}
+      // Low pixel ratio and no antialias: the canvas is much bigger than the
+      // part that shows, so full quality costs a lot (it made scrolling stick).
+      dpr={[1, 1.25]}
+      gl={{ alpha: true, antialias: false, powerPreference: "low-power" }}
+      frameloop={paused ? "never" : "always"}
     >
       <ambientLight color={globeConfig.ambientLight} intensity={0.6} />
       <directionalLight

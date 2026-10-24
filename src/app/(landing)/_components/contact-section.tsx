@@ -7,7 +7,7 @@
 // email app with the message filled in (a mailto: link), so nothing is lost.
 // When an API is ready, replace the body of `onSubmit`.
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Select } from "@base-ui/react/select";
 import {
   ArrowRight,
@@ -62,6 +62,16 @@ const field =
 export function ContactSection() {
   const [sent, setSent] = useState(false);
 
+  // Large screens only: render the WebGL waves.
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+    const update = () => setWide(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -85,17 +95,25 @@ export function ContactSection() {
       className="relative z-10 mx-auto w-full max-w-7xl scroll-mt-24 px-6 py-14 md:px-10"
     >
       <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#3f5fb5] via-[#6a55e6] to-[#7c5cf0]">
-        {/* Background: React Bits GradientWaves, in the site's colors */}
+        {/* Background: React Bits GradientWaves (large screens only: its 3D
+            shader is too heavy for phone GPUs). Phones get a still gradient in
+            the same colors. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_100%,rgba(219,95,168,0.55),transparent_60%),radial-gradient(ellipse_at_10%_90%,rgba(255,217,238,0.35),transparent_55%)] lg:hidden"
+        />
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          <GradientWaves
-            horizonColor="#5B4BD6"
-            waveColor="#DB5FA8"
-            crestColor="#FFD9EE"
-            speed={0.3}
-            fogDepth={26}
-            mouseInteraction={false}
-            grain={false}
-          />
+          {wide && (
+            <GradientWaves
+              horizonColor="#5B4BD6"
+              waveColor="#DB5FA8"
+              crestColor="#FFD9EE"
+              speed={0.3}
+              fogDepth={26}
+              mouseInteraction={false}
+              grain={false}
+            />
+          )}
         </div>
 
         <div className="relative grid gap-10 p-7 md:p-12 lg:grid-cols-2 lg:gap-16">

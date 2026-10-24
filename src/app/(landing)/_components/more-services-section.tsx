@@ -8,9 +8,10 @@ import {
   Share2,
   type LucideIcon,
 } from "lucide-react";
+import { Reveal } from "@/components/reveal";
 import { cn } from "@/lib/utils";
 
-// Services beyond software. Colors cycle through the site's theme.
+// Services beyond software. Tile colors step through the brand blues/violets.
 const SERVICES: {
   title: string;
   text: string;
@@ -21,37 +22,37 @@ const SERVICES: {
     title: "Voice Calling",
     text: "Trained relationship managers (RMs) who call your customers for sales, support and follow-ups.",
     icon: PhoneCall,
-    tile: "bg-[#EEF3FF] text-[#4F74E0]",
+    tile: "bg-[#EAF4FF] text-[#0A84FF]",
   },
   {
     title: "Digital Marketing",
     text: "Ads, SEO and campaigns that bring the right customers to you.",
     icon: Megaphone,
-    tile: "bg-[#F3EFFF] text-[#7C5CF0]",
+    tile: "bg-[#EEF2FF] text-[#2F5BFF]",
   },
   {
     title: "Video Editing",
     text: "Reels, ads and explainer videos, edited to keep people watching.",
     icon: Clapperboard,
-    tile: "bg-[#FDEFF7] text-[#DB5FA8]",
+    tile: "bg-[#EFEEFF] text-[#4F46E5]",
   },
   {
     title: "Photo & Video Shoots",
     text: "Product, brand and event shoots, planned and shot by our team.",
     icon: Camera,
-    tile: "bg-[#FFF3EA] text-[#EA7A3A]",
+    tile: "bg-[#F2EEFF] text-[#5B3BF0]",
   },
   {
     title: "Social Media",
     text: "Content planning, posting and page management, done for you.",
     icon: Share2,
-    tile: "bg-[#EEF3FF] text-[#4F74E0]",
+    tile: "bg-[#EAF4FF] text-[#0A84FF]",
   },
   {
     title: "Chatbot Integration",
     text: "Chatbots for your website and WhatsApp that answer customers and collect leads.",
     icon: Bot,
-    tile: "bg-[#F3EFFF] text-[#7C5CF0]",
+    tile: "bg-[#EEF2FF] text-[#2F5BFF]",
   },
 ];
 
@@ -62,14 +63,14 @@ export function MoreServicesSection() {
       className="relative z-10 mx-auto w-full max-w-7xl px-6 py-14 md:px-10"
     >
       <div className="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-16">
-        {/* Intro */}
-        <div>
+        {/* Intro (reveals on scroll) */}
+        <Reveal distance={40} duration={0.9} threshold={0.15}>
           <p className="text-[11px] font-medium tracking-[0.25em] text-slate-500 uppercase">
             More services
           </p>
           <h2 className="mt-4 text-4xl leading-[1.1] font-semibold tracking-tight text-slate-950">
             Beyond software,{" "}
-            <span className="bg-gradient-to-r from-[#3f5fb5] via-[#7c5cf0] to-[#db5fa8] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#0A84FF] via-[#2F5BFF] to-[#5B3BF0] bg-clip-text text-transparent">
               we help you grow.
             </span>
           </h2>
@@ -84,12 +85,20 @@ export function MoreServicesSection() {
             Ask about a service
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
           </a>
-        </div>
+        </Reveal>
 
         {/* Service list: rows with a line between them */}
-        <ul className="grid sm:grid-cols-2 sm:gap-x-10">
+        <Reveal
+          distance={40}
+          duration={0.8}
+          stagger={0.08}
+          threshold={0.12}
+          role="list"
+          className="grid sm:grid-cols-2 sm:gap-x-10"
+        >
           {SERVICES.map(({ title, text, icon: Icon, tile }) => (
-            <li
+            <div
+              role="listitem"
               key={title}
               className="flex items-start gap-4 border-t border-slate-200 py-6"
             >
@@ -107,9 +116,9 @@ export function MoreServicesSection() {
                   {text}
                 </p>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </Reveal>
       </div>
     </section>
   );
